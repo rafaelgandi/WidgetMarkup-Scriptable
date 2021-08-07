@@ -6,7 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // WidgetMarkup - Simple implementation of markup for Scriptable widgets.
 ////////////////////////////////////////////////////////////////////////////////
-// Version 0.20210806a
+// Version 0.20210807a
 
 function _mapMethodsAndCall(inst, options) {
     Object.keys(options).forEach((key) => {
@@ -116,7 +116,7 @@ async function _getMappedDOM(markup) {
     const webview = new WebView();
     await webview.loadHTML('<html></html>');
     //console.log(markup);
-    markup = markup.replace(/\n/ig, '');
+    markup = markup.replace(/(\r\n|\n|\r)/gm, ''); // See: https://stackoverflow.com/a/10805198
     markup = `<raffy-element>${markup}</raffy-element>`;
     // See: https://gomakethings.com/how-to-create-a-map-of-dom-nodes-with-vanilla-js/
     const js = `
@@ -154,7 +154,11 @@ async function _getMappedDOM(markup) {
       getDom();
   `;
     let response = await webview.evaluateJavaScript(js, false);
-    return JSON.parse(response);
+    const mappedArray = JSON.parse(response);
+    if (mappedArray.length && mappedArray[0].tag.toLocaleLowerCase().indexOf('error') !== -1) {
+        throw new Error(mappedArray[0].textContent);
+    }
+    return mappedArray;
 }
 
 
@@ -174,10 +178,4 @@ async function widgetMarkup(str, ...eq) {
 
 module.exports.widgetMarkup = widgetMarkup;
 module.exports.concatMarkup = concatMarkup;
-
-
-
-
-
-
 
