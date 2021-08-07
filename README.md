@@ -61,7 +61,7 @@ Currently the libtrary only supports the following tags
 
     ```xml
     <stack>
-    	<text>Hi I'm a text</text>
+    	<text>Hello World</text>
     	<spacer value="10" />
     </stack>
     ```
@@ -78,7 +78,7 @@ Currently the libtrary only supports the following tags
 
     const docsSymbol = SFSymbol.named("book");
     const widget = await widgetMarkup`
-      <widget
+      <widget>
     	    <stack>
     	       <image src="${docsSymbol.image}" />
     	    </stack
@@ -88,3 +88,91 @@ Currently the libtrary only supports the following tags
 
 - `<spacer>` — The equivalent of Scriptable's [addSpacer()](https://docs.scriptable.app/widgetspacer/) method. This tag accepts a `value` attribute which takes in a numeric value for the length. If the value of the `value` attribute is 0 then this instructs the spacer to have a flexible length.
 - `<date>` — The equivalent of Scriptable's [addDate()](https://docs.scriptable.app/widgetdate/) method. This tag requires `value` attribute which takes in an instance of the `Date` class.
+
+# Styling
+
+All tags can accept a `styles` attribute. This attribute can only accept an object which is the list of styles the element will have. Here's a simple example of styling a text element.
+
+```jsx
+const textStyles = {
+	minimumScaleFactor: 0.5,
+  	textColor: Color.white(),
+  	font: Font.systemFont(18)	
+};
+
+const widget = await widgetMarkup`
+  <widget>
+	    <text styles="${textStyles}">Hello World</text>
+  </widget>
+`;
+```
+
+The code above would be equivalent to this in Scriptable.
+
+```jsx
+const widget = new ListWidget();
+const text = widget.addText('Hello World');
+text.minimumScaleFactor = 0.5;
+text.textColor = Color.white();
+text.font = Font.systemFont(18);
+```
+
+The library encourages you to separate your styles from the structure of your widget. As the complexity of the structure of your widget grows, this way of coding will hopefully make your code more readable and maintainable.
+
+## Methods
+
+Some styling properties in Scriptable needs to be called as a function/method. An example of this is `layoutVertically` or `layoutHorizontally` for stacks. For this type of styling, the library requires that the method name should be prefixed with a `*` . This is to signal to the parser that the styling property needs to be called as a function. Here's an example.
+
+```jsx
+const stackStyles = {
+    '*layoutVertically': null, // prefix with * and given a value of null if the method does not require a parameter.
+    size: new Size(100, 20)
+};
+
+const widget = await widgetMarkup`
+  <widget>
+	    <stack styles="${stackStyles}">
+            ...
+        </stack>
+  </widget>
+`;
+```
+
+Which would be equivalent to this...
+
+```jsx
+const widget = new ListWidget();
+const stackElement = widget.addStack();
+stackElement.layoutVertically(); // Called as a function.
+stackElement.size = new Size(100, 20);
+```
+
+What if the styling method requires a parameter? A perfect example of this is the `setPadding` method which can take four parameters. For this you can pass in the parameters as an array of values.
+
+```jsx
+const stackStyles = {
+    '*setPadding': [5, 9, 5, 5], // Assign an array of values for the parameters
+    size: new Size(100, 20)
+};
+
+const widget = await widgetMarkup`
+  <widget>
+	    <stack styles="${stackStyles}">
+            ...
+        </stack>
+  </widget>
+`;
+```
+
+The code above is equivalent to...
+
+```jsx
+const widget = new ListWidget();
+const stackElement = widget.addStack();
+stackElement.setPadding(5, 9, 5, 5); // Padding assigned.
+stackElement.size = new Size(100, 20);
+```
+
+# Conclusion
+
+This library is still on a very early stage of development and you may encounter bugs. Just let me know if you have any questions about it or found a bug. You can contact me [here](https://rafaelgandi.com/contact). This library is also open for you to edit and improve. Hopefully it encourages you to write more awesome Scriptable iOS widgets.
