@@ -24,7 +24,7 @@ const widget = await widgetMarkup`
     <spacer value="10" />
     <stack>
 	       <text>Hi I'm a widget 👋</text>
-    </stack
+    </stack>
     <spacer value="15" />
   </widget>
 `;
@@ -47,7 +47,7 @@ const widget = await widgetMarkup`
   <widget
     <stack>
 	       ${textElement}
-    </stack
+    </stack>
   </widget>
 `;
 ```
@@ -81,7 +81,7 @@ Currently the libtrary only supports the following tags
       <widget>
     	    <stack>
     	       <image src="${docsSymbol.image}" />
-    	    </stack
+    	    </stack>
       </widget>
     `;
     ```
