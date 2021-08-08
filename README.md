@@ -16,7 +16,7 @@ The library exposes only two template literal tags, `widgetMarkup` and `concatMa
 
 # `widgetMarkup`
 
-This is the primary markdown parser. This is where you place your markups. It will return an instance of Scriptable's `ListWidget` class.
+This is the primary markup parser. This is where you place your markup tags and is the main body of your widget. It will return an instance of Scriptable's `ListWidget` class.
 
 ```jsx
 const widget = await widgetMarkup`
