@@ -2,11 +2,10 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: cyan; icon-glyph: microscope;
 
-
 ////////////////////////////////////////////////////////////////////////////////
 // WidgetMarkup - Simple implementation of markup for Scriptable widgets.
 ////////////////////////////////////////////////////////////////////////////////
-// Version 0.20210807a
+// Version 0.20210808a
 
 function _mapMethodsAndCall(inst, options) {
     Object.keys(options).forEach((key) => {
@@ -117,43 +116,50 @@ async function _getMappedDOM(markup) {
     await webview.loadHTML('<html></html>');
     //console.log(markup);
     markup = markup.replace(/(\r\n|\n|\r)/gm, ''); // See: https://stackoverflow.com/a/10805198
-    markup = `<raffy-element>${markup}</raffy-element>`;
+    markup = `<tabom>${markup}</tabom>`;
     // See: https://gomakethings.com/how-to-create-a-map-of-dom-nodes-with-vanilla-js/
     const js = `
-      var getAttributes = function (attributes) {
-      	return Array.prototype.map.call(attributes, function (attribute) {
-      		return {
-      			name: attribute.name,
-      			value: attribute.value
-      		};
-      	});
-      };
-      
-      var createDOMMap = function (element) {
-      	return Array.prototype.map.call(element.childNodes, (function (node) {
-          if (node.nodeType !== 3 && node.nodeType !== 8) {
-            var details = {
-                 tag: node.tagName.toLowerCase(),
-                 textContent: node.textContent,
-        			attributes: node.nodeType !== 1 ? [] : getAttributes(node.attributes)    			
-        		};
-        		details.children = createDOMMap(node);
-        		return details;
-          }
-          return null;   		
-      	}))
-        .filter((e) => e !== null);
-      };
-  
-      function getDom() {
+    var getAttributes = function (attributes) {
+        return Array.prototype.map.call(attributes, function (attribute) {
+            return {
+                name: attribute.name,
+                value: attribute.value
+            };
+        });
+    };
+    
+    var createDOMMap = function (element) {
+        return Array.prototype.map.call(element.childNodes, (function (node) {
+            if (node.nodeType !== 3 && node.nodeType !== 8) {
+                var details = {
+                    tag: node.tagName.toLowerCase(),
+                    textContent: node.textContent,
+                    attributes: node.nodeType !== 1 ? [] : getAttributes(node.attributes)
+                };
+                details.children = createDOMMap(node);
+                return details;
+            }
+            return null;
+        })).filter((e) => e !== null);
+    };
+    
+    function getDom() {
         let htmlStr = '${markup}';
         const dom = new DOMParser();
         let doc = dom.parseFromString(htmlStr, 'application/xml');
         return JSON.stringify(createDOMMap(doc.documentElement));
-      }
-      getDom();
+    }
+    try {
+        completion(getDom());
+    }
+    catch (err) {
+        completion([{
+            tag: 'error',
+            textContent: err.message
+        }]);
+    }    
   `;
-    let response = await webview.evaluateJavaScript(js, false);
+    let response = await webview.evaluateJavaScript(js, true);
     const mappedArray = JSON.parse(response);
     if (mappedArray.length && mappedArray[0].tag.toLocaleLowerCase().indexOf('error') !== -1) {
         throw new Error(mappedArray[0].textContent);
@@ -166,16 +172,15 @@ async function widgetMarkup(str, ...eq) {
     let markup = _replacer(str, eq);
     let map = await _getMappedDOM(markup);
     const parentElementMap = map[0];
+    if (typeof parentElementMap === 'undefined') {
+        throw new Error("WidgetMarkup requires that the <widget> element be present.");
+    }
     const childrenMap = parentElementMap.children;
     const widget = new ListWidget();
-
     _mapMethodsAndCall(widget, _getAttrValue(parentElementMap.attributes, 'styles'));
     _iterateChildren(widget, childrenMap);
     return widget;
 }
 
-
-
 module.exports.widgetMarkup = widgetMarkup;
 module.exports.concatMarkup = concatMarkup;
-
