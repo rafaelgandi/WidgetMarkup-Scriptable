@@ -2,10 +2,10 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: cyan; icon-glyph: microscope;
 
-////////////////////////////////////////////////////////////////////////////////
-// WidgetMarkup - Simple implementation of markup for Scriptable widgets.
-////////////////////////////////////////////////////////////////////////////////
-// Version 0.20210808a
+////////////////////////////////////////////////////////////////////////////////////
+// {</>} WidgetMarkup - Simple implementation of markup for Scriptable iOS widgets.
+////////////////////////////////////////////////////////////////////////////////////
+// Version 0.20210808b
 
 function _mapMethodsAndCall(inst, options) {
     Object.keys(options).forEach((key) => {
@@ -64,8 +64,6 @@ function _iterateChildren(widgetInstance, children) {
 }
 
 function _getAttrValue(attrs = [], name = 'styles') {
-    //console.log(attrs);
-    //console.log(name);
     let attr = {};
     attrs.forEach((a) => {
         if (a.name.toLowerCase() === name.toLocaleLowerCase()) {
@@ -89,7 +87,6 @@ function _replacer(str, eq) {
                 eq[i] = eq[i].join('');
             }
             if (typeof eq[i] === 'string') {
-                //console.log(eq[i]);
                 builtStr += s + eq[i];
             }
             else {
@@ -167,13 +164,12 @@ async function _getMappedDOM(markup) {
     return mappedArray;
 }
 
-
 async function widgetMarkup(str, ...eq) {
     let markup = _replacer(str, eq);
     let map = await _getMappedDOM(markup);
     const parentElementMap = map[0];
     if (typeof parentElementMap === 'undefined') {
-        throw new Error("WidgetMarkup requires that the <widget> element be present.");
+        throw new Error("WidgetMarkup requires that the <widget> element be the parent element of your widget.");
     }
     const childrenMap = parentElementMap.children;
     const widget = new ListWidget();
