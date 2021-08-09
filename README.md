@@ -173,7 +173,7 @@ stackElement.setPadding(5, 9, 5, 5); // Padding assigned.
 stackElement.size = new Size(100, 20);
 ```
 
-# Syntax Higlighting
+# Syntax Highlighting
 
 If your are using vscode for development. I suggest installing [Matt Bierner's Comment tagged templates](https://marketplace.visualstudio.com/items?itemName=bierner.comment-tagged-templates) extension. This makes your widget markup even more readable while you code.
 
