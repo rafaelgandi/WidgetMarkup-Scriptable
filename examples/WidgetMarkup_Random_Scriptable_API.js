@@ -89,7 +89,7 @@ async function createWidget(api) {
 
     const widget = await widgetMarkup`
     <widget styles="${styles.widget}">
-        <stack id="titleStack">
+        <stack>
             <image src="${appIcon}" styles="${styles.appIconImage}" />
             <spacer value="4" />
             <text styles="${styles.titleText}">${title}</text>
@@ -104,7 +104,7 @@ async function createWidget(api) {
                 let docsSymbol = SFSymbol.named("book");
                 return concatMarkup`
                     <spacer value="8" />
-                    <stack id="footerStack">
+                    <stack>
                         <stack styles="${styles.linkStack}">
                             <text styles="${styles.linkText}">Read more</text>
                             <spacer value="3" />
