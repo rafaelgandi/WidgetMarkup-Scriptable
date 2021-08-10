@@ -184,3 +184,6 @@ If you are using vscode for development. I suggest installing [Matt Bierner's Co
 This library is still on a very early stage of development and you may encounter bugs. Just let me know if you have any questions about it or if you found a bug. You can contact me [here](https://rafaelgandi.com/contact). This library is also open for you to edit and improve. Play around with it and make it work for your needs. Hopefully it encourages you to write more awesome Scriptable iOS widgets.
 
 If you find this library helpful, send me a screenshot of your widget or a code snippet on how you are using it. I'd love to see how you guys are using this library.
+
+
+[![Download with ScriptDude](https://scriptdu.de/download.svg)](https://scriptdu.de/?name=Widget+Markup&source=https%3A%2F%2Fraw.githubusercontent.com%2Frafaelgandi%2FWidgetMarkup-Scriptable%2Fmain%2FWidgetMarkup.js&docs=https%3A%2F%2Fgithub.com%2Frafaelgandi%2FWidgetMarkup-Scriptable%2Fblob%2Fmain%2FREADME.md#installation)
