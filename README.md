@@ -175,10 +175,12 @@ stackElement.size = new Size(100, 20);
 
 # Syntax Highlighting
 
-If your are using vscode for development. I suggest installing [Matt Bierner's Comment tagged templates](https://marketplace.visualstudio.com/items?itemName=bierner.comment-tagged-templates) extension. This makes your widget markup even more readable while you code.
+If you are using vscode for development. I suggest installing [Matt Bierner's Comment tagged templates](https://marketplace.visualstudio.com/items?itemName=bierner.comment-tagged-templates) extension. This makes your widget markup even more readable while you code.
 
 <img src="https://github.com/rafaelgandi/WidgetMarkup-Scriptable/blob/a71581a543789e2bf6bbcecdc6089e8c2111fcbd/vscode-markup-highlighting.png" alt="Markup syntax highlighting"> 
 
 # Conclusion
 
-This library is still on a very early stage of development and you may encounter bugs. Just let me know if you have any questions about it or found a bug. You can contact me [here](https://rafaelgandi.com/contact). This library is also open for you to edit and improve. Hopefully it encourages you to write more awesome Scriptable iOS widgets.
+This library is still on a very early stage of development and you may encounter bugs. Just let me know if you have any questions about it or if you found a bug. You can contact me [here](https://rafaelgandi.com/contact). This library is also open for you to edit and improve. Play around with it and make it work for your needs. Hopefully it encourages you to write more awesome Scriptable iOS widgets.
+
+If you find this library helpful, send me a screenshot of your widget or a code snippet on how you are using it. I'd love to see how you guys are using this library.
