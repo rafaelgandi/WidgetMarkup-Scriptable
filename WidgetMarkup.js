@@ -5,12 +5,27 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // {</>} WidgetMarkup - Simple implementation of markup for Scriptable iOS widgets.
 ////////////////////////////////////////////////////////////////////////////////////
-// Version 0.20210808b
+// Version 0.20210812a
+
+
+function _getObjectClass(obj) {
+    // See: https://stackoverflow.com/a/12730085
+    if (obj && obj.constructor && obj.constructor.toString) {
+        let arr = obj.constructor.toString().match(/function\s*(\w+)/);
+        if (arr && arr.length == 2) {
+            return arr[1];
+        }
+    }
+    return undefined;
+}
 
 function _mapMethodsAndCall(inst, options) {
     Object.keys(options).forEach((key) => {
         if (key.indexOf('*') !== -1) {
             key = key.replace('*', '');
+            if (!(key in inst)) {
+                throw new Error(`Method "${key}()" is not applicable to instance of ${_getObjectClass(inst)}`);
+            }
             if (Array.isArray(options['*' + key])) {
                 inst[key](...options['*' + key]);
             }
@@ -19,6 +34,9 @@ function _mapMethodsAndCall(inst, options) {
             }
         }
         else {
+            if (!(key in inst)) {
+                throw new Error(`Property "${key}" is not applicable to instance of ${_getObjectClass(inst)}`);
+            }
             inst[key] = options[key];
         }
     });
