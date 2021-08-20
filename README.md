@@ -9,12 +9,17 @@ Write Scriptable widgets with markup.
 Just import the library script to your scriptable widget file.
 
 ```jsx
-const {widgetMarkup, concatMarkup} = importModule('WidgetMarkup');
+const { widgetMarkup, concatMarkup } = importModule('WidgetMarkup');
+```
+Alternatively if you would rather have just one file for your widget, you can copy the contents of `WidgetMarkup.min.js` and paste it on top of your widget file. Then import it like so...
+```jsx
+const { widgetMarkup, concatMarkup } = WidgetMarkup;
 ```
 
+# Usage
 The library exposes only two template literal tags, `widgetMarkup` and `concatMarkup`.
 
-# `widgetMarkup`
+## `widgetMarkup`
 
 This is the primary markup parser. This is where you place your markup tags and is the main body of your widget. It will return an instance of Scriptable's `ListWidget` class.
 
@@ -23,7 +28,7 @@ const widget = await widgetMarkup`
   <widget>
     <spacer value="10" />
     <stack>
-	       <text>Hi I'm a widget 👋</text>
+	<text>Hi I'm a widget 👋</text>
     </stack>
     <spacer value="15" />
   </widget>
@@ -35,7 +40,7 @@ if (config.runsInWidget) {
 Script.complete()
 ```
 
-# `concatMarkup`
+## `concatMarkup`
 
 This method is used to concatenate markup elements to the main widget body. This method is used to ensure that the parser can properly set the styles of the elements being concatenated.
 
@@ -45,9 +50,9 @@ const textElement = concatMarkup`<text>I'm from the outside.</text>`
 
 const widget = await widgetMarkup`
   <widget
-    <stack>
-	       ${textElement}
-    </stack>
+     <stack>
+        ${textElement}
+     </stack>
   </widget>
 `;
 ```
@@ -79,9 +84,9 @@ Currently the libtrary only supports the following tags
     const docsSymbol = SFSymbol.named("book");
     const widget = await widgetMarkup`
       <widget>
-    	    <stack>
-    	       <image src="${docsSymbol.image}" />
-    	    </stack>
+    	<stack>
+    	   <image src="${docsSymbol.image}" />
+    	</stack>
       </widget>
     `;
     ```
@@ -102,7 +107,7 @@ const textStyles = {
 
 const widget = await widgetMarkup`
   <widget>
-	    <text styles="${textStyles}">Hello World</text>
+  	<text styles="${textStyles}">Hello World</text>
   </widget>
 `;
 ```
@@ -131,7 +136,7 @@ const stackStyles = {
 
 const widget = await widgetMarkup`
   <widget>
-	    <stack styles="${stackStyles}">
+  	<stack styles="${stackStyles}">
             ...
         </stack>
   </widget>
@@ -157,7 +162,7 @@ const stackStyles = {
 
 const widget = await widgetMarkup`
   <widget>
-	    <stack styles="${stackStyles}">
+	<stack styles="${stackStyles}">
             ...
         </stack>
   </widget>
