@@ -84,7 +84,7 @@ function _iterateChildren(widgetInstance, children) {
 function _getAttrValue(attrs = [], name = 'styles') {
     let attr = {};
     attrs.forEach((a) => {
-        if (a.name.toLowerCase() === name.toLocaleLowerCase()) {
+        if (a.name.toLowerCase() === name.toLowerCase()) {
             if (typeof holder[a.value] !== 'undefined') {
                 attr = holder[a.value];
             }
