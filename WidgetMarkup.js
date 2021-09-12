@@ -5,7 +5,8 @@
 ////////////////////////////////////////////////////////////////////////////////////
 // {</>} WidgetMarkup - Simple implementation of markup for Scriptable iOS widgets.
 ////////////////////////////////////////////////////////////////////////////////////
-// Version 0.20210820a
+// Version 0.20210912a
+// Change Log: Fix xml special characters issue.
 
 
 const WidgetMarkup = (() => {
@@ -18,6 +19,24 @@ const WidgetMarkup = (() => {
             }
         }
         return undefined;
+    }
+
+    function encodeXML(str) {
+        // See: https://stackoverflow.com/a/7918944
+        return str.replace(/&/g, '&amp;')
+               .replace(/</g, '&lt;')
+               .replace(/>/g, '&gt;')
+               .replace(/"/g, '&quot;')
+               .replace(/'/g, '&apos;');
+    }
+
+    function decodeXML(str) {
+        // See: https://stackoverflow.com/a/7918944
+        return str.replace(/&apos;/g, "'")
+               .replace(/&quot;/g, '"')
+               .replace(/&gt;/g, '>')
+               .replace(/&lt;/g, '<')
+               .replace(/&amp;/g, '&');
     }
 
     function _mapMethodsAndCall(inst, options) {
@@ -53,7 +72,7 @@ const WidgetMarkup = (() => {
                         return holder[p1].toString();
                     });
                 }
-                let t = widgetInstance.addText(child.textContent);
+                let t = widgetInstance.addText(decodeXML(child.textContent));
                 _mapMethodsAndCall(t, _getAttrValue(child.attributes, 'styles'));
             }
             else if (child.tag === 'spacer') {
@@ -106,7 +125,7 @@ const WidgetMarkup = (() => {
                     eq[i] = eq[i].join('');
                 }
                 if (typeof eq[i] === 'string') {
-                    builtStr += s + eq[i];
+                    builtStr += s + eq[i];                  
                 }
                 else {
                     let k = '$$[' + UUID.string() + (Math.floor(Math.random() * 20)) + ']';
@@ -117,7 +136,6 @@ const WidgetMarkup = (() => {
             else {
                 builtStr += s;
             }
-
         });
         return builtStr;
     }
@@ -127,11 +145,20 @@ const WidgetMarkup = (() => {
         return r;
     }
 
+    function _prepareMarkup(markup) {
+        const textTagRegExp = /<\s*text[^>]*>(.*?)<\s*\/\s*text>/ig; // See: https://www.regextester.com/27540
+        markup = markup.replace(/(\r\n|\n|\r)/gm, ''); // See: https://stackoverflow.com/a/10805198
+        return markup.replace(textTagRegExp, (match, content) => {
+            return match.replace(content, encodeXML(content));
+        });
+    }
+
     async function _getMappedDOM(markup) {
         const webview = new WebView();
         await webview.loadHTML('<html></html>');
-        //console.log(markup);
-        markup = markup.replace(/(\r\n|\n|\r)/gm, ''); // See: https://stackoverflow.com/a/10805198
+        console.log(markup);
+        // LM: 2021-09-12 11:29:33 [Escape any special chars to xml entities]
+        markup = _prepareMarkup(markup);
         markup = `<tabom>${markup}</tabom>`;
         // See: https://gomakethings.com/how-to-create-a-map-of-dom-nodes-with-vanilla-js/
         const js = `
