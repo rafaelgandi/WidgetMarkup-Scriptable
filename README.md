@@ -59,7 +59,7 @@ const widget = await widgetMarkup`
 
 # Tags Supported
 
-Currently the libtrary only supports the following tags
+Currently the library only supports the following tags
 
 - `<widget>` — The parent element of the widget. There can only be one widget tag per widget. This is the container for all the elements in the widget.
 - `<stack>` — The equivalent of Scriptable's [.addStack()](https://docs.scriptable.app/widgetstack/) method. This tag can have other tags inside as children. It could also have other stack tags as children.
