@@ -184,6 +184,9 @@ If you are using vscode for development. I suggest installing [Matt Bierner's Co
 
 <img src="https://github.com/rafaelgandi/WidgetMarkup-Scriptable/blob/a71581a543789e2bf6bbcecdc6089e8c2111fcbd/vscode-markup-highlighting.png" alt="Markup syntax highlighting"> 
 
+# Examples
+You can find example widget re-builds using this library [here](https://github.com/rafaelgandi/WidgetMarkup-Scriptable/tree/main/examples)
+
 # Conclusion
 
 This library is still on a very early stage of development and you may encounter bugs. Just let me know if you have any questions about it or if you found a bug. You can contact me [here](https://rafaelgandi.com/contact). This library is also open for you to edit and improve. Play around with it and make it work for your needs. Hopefully it encourages you to write more awesome Scriptable iOS widgets.
