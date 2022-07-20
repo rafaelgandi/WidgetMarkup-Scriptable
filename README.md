@@ -34,7 +34,7 @@ const widget = await widgetMarkup`
   </widget>
 `;
 if (config.runsInWidget) {
-    // Runs inside a widget so add it to the homescreen widget
+    // Runs inside a widget so add it to the homescreen
     Script.setWidget(widget);
 }
 Script.complete()
