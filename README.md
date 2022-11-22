@@ -94,9 +94,15 @@ Currently the library only supports the following tags
 - `<spacer>` — The equivalent of Scriptable's [addSpacer()](https://docs.scriptable.app/widgetspacer/) method. This tag accepts a `value` attribute which takes in a numeric value for the length. If the value of the `value` attribute is 0 then this instructs the spacer to have a flexible length.
 - `<date>` — The equivalent of Scriptable's [addDate()](https://docs.scriptable.app/widgetdate/) method. This tag requires `value` attribute which takes in an instance of the `Date` class.
 
+## Convenience Tags
+- `<hstack>` - Equivalent to `stack.layoutHorizontally()`
+- `<vstack>` - Equivalent to `stack.layoutVertically()`
+
 # Styling
 
-All tags can accept a `styles` attribute. This attribute can only accept an object which is the list of styles the element will have. Here's a simple example of styling a text element.
+All tags can accept a `attr` attribute. This attribute can only accept an object which is the list of styles the element will have. Here's a simple example of styling a text element.
+
+Note: The `styles` attribute is deprecated but still works.
 
 ```jsx
 const textStyles = {
@@ -107,7 +113,7 @@ const textStyles = {
 
 const widget = await widgetMarkup`
   <widget>
-  	<text styles="${textStyles}">Hello World</text>
+  	<text attr="${textStyles}">Hello World</text>
   </widget>
 `;
 ```
@@ -136,7 +142,7 @@ const stackStyles = {
 
 const widget = await widgetMarkup`
   <widget>
-  	<stack styles="${stackStyles}">
+  	<stack attr="${stackStyles}">
             ...
         </stack>
   </widget>
@@ -162,7 +168,7 @@ const stackStyles = {
 
 const widget = await widgetMarkup`
   <widget>
-	<stack styles="${stackStyles}">
+	<stack attr="${stackStyles}">
             ...
         </stack>
   </widget>
@@ -194,4 +200,3 @@ This library is still on a very early stage of development and you may encounter
 If you find this library helpful, send me a screenshot of your widget or a code snippet on how you are using it. I'd love to see how you guys are using this library.
 
 
-[![Download with ScriptDude](https://scriptdu.de/download.svg)](https://scriptdu.de/?name=Widget+Markup&source=https%3A%2F%2Fraw.githubusercontent.com%2Frafaelgandi%2FWidgetMarkup-Scriptable%2Fmain%2FWidgetMarkup.js&docs=https%3A%2F%2Fgithub.com%2Frafaelgandi%2FWidgetMarkup-Scriptable%2Fblob%2Fmain%2FREADME.md#installation)
