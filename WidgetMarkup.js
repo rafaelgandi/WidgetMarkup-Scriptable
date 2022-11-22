@@ -1,12 +1,14 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
-// icon-color: cyan; icon-glyph: microscope;
+// icon-color: deep-green; icon-glyph: microscope;
 
 ////////////////////////////////////////////////////////////////////////////////////
 // {</>} WidgetMarkup - Simple implementation of markup for Scriptable iOS widgets.
 ////////////////////////////////////////////////////////////////////////////////////
-// Version 0.20210912a
-// Change Log: Fix xml special characters issue.
+// Version 1.1.20221122
+// Change Log: 
+// - Added hstack and vstack convenience tags.
+// - Added support for "attr" attribute and deprecated "styles" attribute
 
 
 const WidgetMarkup = (() => {
@@ -74,6 +76,7 @@ const WidgetMarkup = (() => {
                 }
                 let t = widgetInstance.addText(decodeXML(child.textContent));
                 _mapMethodsAndCall(t, _getAttrValue(child.attributes, 'styles'));
+                _mapMethodsAndCall(t, _getAttrValue(child.attributes, 'attr'));
             }
             else if (child.tag === 'spacer') {
                 let space = parseInt(_getAttrValue(child.attributes, 'value'), 10);
@@ -87,14 +90,25 @@ const WidgetMarkup = (() => {
             else if (child.tag === 'image') {
                 let img = widgetInstance.addImage(_getAttrValue(child.attributes, 'src'));
                 _mapMethodsAndCall(img, _getAttrValue(child.attributes, 'styles'));
+                _mapMethodsAndCall(img, _getAttrValue(child.attributes, 'attr'));
             }
             else if (child.tag === 'date') {
                 let date = widgetInstance.addDate(_getAttrValue(child.attributes, 'value'));
                 _mapMethodsAndCall(date, _getAttrValue(child.attributes, 'styles'));
+                _mapMethodsAndCall(date, _getAttrValue(child.attributes, 'attr'));
             }
             else if (child.tag === 'stack') {
                 let stack = widgetInstance.addStack();
                 _mapMethodsAndCall(stack, _getAttrValue(child.attributes, 'styles'));
+                _mapMethodsAndCall(stack, _getAttrValue(child.attributes, 'attr'));
+                _iterateChildren(stack, child.children);
+            }
+            // LM: 2022-11-22 16:53:55 [Added hstack and vstack convenience tags]
+            else if (['hstack', 'vstack'].indexOf(child.tag) !== -1) {
+                let stack = widgetInstance.addStack();
+                stack[(child.tag === 'hstack') ? 'layoutHorizontally' : 'layoutVertically']();
+                _mapMethodsAndCall(stack, _getAttrValue(child.attributes, 'styles'));
+                _mapMethodsAndCall(stack, _getAttrValue(child.attributes, 'attr'));
                 _iterateChildren(stack, child.children);
             }
         });
@@ -156,7 +170,7 @@ const WidgetMarkup = (() => {
     async function _getMappedDOM(markup) {
         const webview = new WebView();
         await webview.loadHTML('<html></html>');
-        console.log(markup);
+        //console.log(markup);
         // LM: 2021-09-12 11:29:33 [Escape any special chars to xml entities]
         markup = _prepareMarkup(markup);
         markup = `<tabom>${markup}</tabom>`;
@@ -220,6 +234,7 @@ const WidgetMarkup = (() => {
         const childrenMap = parentElementMap.children;
         const widget = new ListWidget();
         _mapMethodsAndCall(widget, _getAttrValue(parentElementMap.attributes, 'styles'));
+        _mapMethodsAndCall(widget, _getAttrValue(parentElementMap.attributes, 'attr'));
         _iterateChildren(widget, childrenMap);
         return widget;
     }
