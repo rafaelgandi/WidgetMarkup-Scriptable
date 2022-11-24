@@ -84,9 +84,9 @@ Currently the library only supports the following tags
     const docsSymbol = SFSymbol.named("book");
     const widget = await widgetMarkup`
       <widget>
-    	<stack>
+    	<vstack>
     	   <image src="${docsSymbol.image}" />
-    	</stack>
+    	</vstack>
       </widget>
     `;
     ```
@@ -168,9 +168,9 @@ const stackStyles = {
 
 const widget = await widgetMarkup`
   <widget>
-	<stack attr="${stackStyles}">
+	<hstack attr="${stackStyles}">
             ...
-        </stack>
+        </hstack>
   </widget>
 `;
 ```
