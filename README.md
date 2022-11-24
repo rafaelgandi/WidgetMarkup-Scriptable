@@ -27,9 +27,9 @@ This is the primary markup parser. This is where you place your markup tags and 
 const widget = await widgetMarkup`
   <widget>
     <spacer value="10" />
-    <stack>
+    <hstack>
 	<text>Hi I'm a widget 👋</text>
-    </stack>
+    </hstack>
     <spacer value="15" />
   </widget>
 `;
@@ -50,9 +50,9 @@ const textElement = concatMarkup`<text>I'm from the outside.</text>`
 
 const widget = await widgetMarkup`
   <widget
-     <stack>
+     <vstack>
         ${textElement}
-     </stack>
+     </vstack>
   </widget>
 `;
 ```
